@@ -1,6 +1,6 @@
 #Kubernetes node bootstrap script
-#run syntax is sudo sh K8Starter.sh 1.13.0
-#dont forget to run sudo chmod 555 K8Starter.sh
+#run syntax is sudo sh K8S_Node.sh 1.13.0
+#dont forget to run sudo chmod 555 K8S_Node.sh
 #!/bin/bash
 sudo swapoff -a
 sudo sed -i -e 's/enforcing/disabled/g' /etc/selinux/config;  setenforce 0
