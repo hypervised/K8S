@@ -1,5 +1,5 @@
 #Kubernetes node bootstrap script
-#run syntax is sudo sh K8S_Node.sh <k8s version number>
+#run syntax is sudo sh K8S_Node.sh <k8s version number> <Master DNS name> <Master public IP>
 #example sudo sh K8S_Node.sh 1.16.3
 #dont forget to run sudo chmod 555 K8S_Node.sh
 #!/bin/bash
@@ -31,6 +31,12 @@ net.bridge.bridge-nf-call-iptables = 1
 EOM"
 sysctl --system
 systemctl daemon-reload; sudo systemctl restart kubelet
+sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-bind-port 443 --apiserver-cert-extra-sans=$2,$3 --ignore-preflight-errors=ALL --kubernetes-version=v$1 &>/tmp/kubeadm.log
+sudo mkdir -p $HOME/.kube; sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config; sudo chown $(id -u):$(id -g) $HOME/.kube/config
+kubectl apply -f https://docs.projectcalico.org/v3.9/manifests/calico.yaml
+grep 'kubeadm join' /tmp/kubeadm.log > $HOME/.kube/join
+sudo sed 's/server: .*$/server: https:\/\/'$3':443/' /etc/kubernetes/admin.conf | tee ~/.kube/Cluster.conf
+
 
 
 
