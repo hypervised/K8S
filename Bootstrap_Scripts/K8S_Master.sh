@@ -38,4 +38,5 @@ sudo cp -i /etc/kubernetes/admin.conf $H.kube/config
 sudo chown $(id -u):$(id -g) $H.kube/config
 kubectl apply -f https://docs.projectcalico.org/v3.9/manifests/calico.yaml
 grep 'kubeadm join' /tmp/kubeadm.log > $H.kube/join
+grep 'discovery-token-ca-cert-hash' /tmp/kubeadm.log >> $H.kube/join
 sudo sed 's/server: .*$/server: https:\/\/'$3':443/' /etc/kubernetes/admin.conf | tee ~/.kube/Cluster.conf
