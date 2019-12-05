@@ -29,8 +29,5 @@ sudo /bin/bash -c "cat > /etc/sysctl.d/k8s.conf << EOM
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 EOM"
-sysctl --system
+sudo sysctl --system
 systemctl daemon-reload; sudo systemctl restart kubelet
-
-
-
