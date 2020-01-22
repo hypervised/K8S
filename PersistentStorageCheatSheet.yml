@@ -1,0 +1,40 @@
+sudo apt install -yqq nfs-common
+mkdir efs
+sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 fs-cd8f7b4d.efs.us-east-1.amazonaws.com:/ efs
+
+wget https://raw.githubusercontent.com/kubernetes-incubator/external-storage/master/aws/efs/deploy/class.yaml
+wget https://raw.githubusercontent.com/kubernetes-incubator/external-storage/master/aws/efs/deploy/configmap.yaml
+wget https://raw.githubusercontent.com/kubernetes-incubator/external-storage/master/aws/efs/deploy/deployment.yaml
+wget https://raw.githubusercontent.com/kubernetes-incubator/external-storage/master/aws/efs/deploy/rbac.yaml
+wget https://raw.githubusercontent.com/kubernetes-incubator/external-storage/master/aws/efs/deploy/claim.yaml
+wget https://raw.githubusercontent.com/kubernetes-incubator/external-storage/master/aws/efs/deploy/test-pod.yaml
+
+
+
+In the configmap.yaml file, change file.system.id and aws.region to the values appropriate for your EFS. See the following example:
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: efs-provisioner
+data:
+  file.system.id: fs-390f9d92
+  aws.region: us-west-2
+  provisioner.name: example.com/aws-efs
+  dns.name: "fs-cd8f7b4d.efs.us-east-1.amazonaws.com"
+  
+ In your deployment.yaml file, change the volumes configuration to a path of /. See the following example:
+volumeMounts:
+  - name: pv-volume
+  mountPath: /persistentvolumes
+volumes:
+  - name: pv-volume
+    nfs:
+      server: fs-1234abcd.efs.us-east-1.amazonaws.com
+      path: /
+
+kubectl apply -f class.yaml
+kubectl apply -f configmap.yaml
+kubectl apply -f rbac.yaml
+kubectl apply -f deployment.yaml
+kubectl apply -f claim.yaml
+kubectl apply -f test-pod.yaml
