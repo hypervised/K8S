@@ -5,6 +5,7 @@
 #dont forget to run  chmod 555 EFS_Provisioner.sh
 #$1=DNS name of EFS, example fs-12345678.efs.us-east-1.amazonaws.com
 #$2= The file system id for efs, example fs-12345678
+#$3= the region the EFS is located in
 
 #install nfs tools and mount the file system
 sudo apt install -yqq nfs-common
