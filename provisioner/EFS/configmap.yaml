@@ -4,6 +4,6 @@ metadata:
   name: efs-provisioner
 data:
   file.system.id: REPLACEFSID 
-  aws.region: us-east-1
+  aws.region: REPLACEREGION
   provisioner.name: example.com/aws-efs
   dns.name: "REPLACEDNAME"
