@@ -28,9 +28,9 @@ sudo sed -i '/server:/s/REPLACESERVER/$1/g' deployment.yaml
 
 #deploy the manifests
 
-microk8s.kubectl apply -f class.yaml
-microk8skubectl apply -f configmap.yaml
-microk8skubectl apply -f rbac.yaml
-microk8skubectl apply -f deployment.yaml
-microk8skubectl apply -f claim.yaml
+sudo microk8s.kubectl apply -f class.yaml
+sudo microk8s.kubectl apply -f configmap.yaml
+sudo microk8s.kubectl apply -f rbac.yaml
+sudo microk8s.kubectl apply -f deployment.yaml
+sudo microk8s.kubectl apply -f claim.yaml
 microk8skubectl apply -f test-pod.yaml
