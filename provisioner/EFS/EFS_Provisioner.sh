@@ -13,12 +13,12 @@ sudo mkdir efs
 sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 $1:/ efs
 
 #get manifests
-wget https://raw.githubusercontent.com/hypervised/K8S/master/provisioner/EFS/claim.yaml
-wget https://raw.githubusercontent.com/hypervised/K8S/master/provisioner/EFS/class.yaml
-wget https://raw.githubusercontent.com/hypervised/K8S/master/provisioner/EFS/configmap.yaml
-wget https://raw.githubusercontent.com/hypervised/K8S/master/provisioner/EFS/deployment.yaml
-wget https://raw.githubusercontent.com/hypervised/K8S/master/provisioner/EFS/rbac.yaml
-wget https://raw.githubusercontent.com/hypervised/K8S/master/provisioner/EFS/test-pod.yaml
+wget https://raw.githubusercontent.com/hypervised/K8S/master/provisioner/EFS/claim.yaml > claim.yaml
+wget https://raw.githubusercontent.com/hypervised/K8S/master/provisioner/EFS/class.yaml > class.yaml
+wget https://raw.githubusercontent.com/hypervised/K8S/master/provisioner/EFS/configmap.yaml > configmap.yaml
+wget https://raw.githubusercontent.com/hypervised/K8S/master/provisioner/EFS/deployment.yaml > deployment.yaml
+wget https://raw.githubusercontent.com/hypervised/K8S/master/provisioner/EFS/rbac.yaml > rbac.yaml
+wget https://raw.githubusercontent.com/hypervised/K8S/master/provisioner/EFS/test-pod.yaml > test-pods.yaml
 
 #update the yaml files with your EFS info
 sudo sed -i '/dns.name:/s/REPLACEDNAME/$1/g' configmap.yaml
@@ -33,4 +33,4 @@ sudo microk8s.kubectl apply -f configmap.yaml
 sudo microk8s.kubectl apply -f rbac.yaml
 sudo microk8s.kubectl apply -f deployment.yaml
 sudo microk8s.kubectl apply -f claim.yaml
-microk8skubectl apply -f test-pod.yaml
+sudo microk8s.kubectl apply -f test-pod.yaml
