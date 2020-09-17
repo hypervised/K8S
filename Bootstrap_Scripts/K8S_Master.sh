@@ -5,12 +5,7 @@
 #dont forget to run  chmod 555 K8S_Master.sh
  swapoff -a
  sed -i -e 's/enforcing/disabled/g' /etc/selinux/config;   setenforce 0
- /bin/bash -c "cat > /etc/yum.repos.d/virt7-docker-common-release.repo << EOM
-[virt7-docker-common-release]
-name=virt7-docker-common-release
-baseurl=http://cbs.centos.org/repos/virt7-docker-common-release/x86_64/os/
-gpgcheck=0
-EOM"
+sudo yum install docker
  /bin/bash -c "cat > /etc/yum.repos.d/kubernetes.repo << EOM
 [kubernetes]
 name=Kubernetes
@@ -31,9 +26,9 @@ net.bridge.bridge-nf-call-iptables = 1
 EOM"
  sysctl --system
  systemctl daemon-reload;  systemctl restart kubelet
- kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-bind-port 443 --apiserver-cert-extra-sans=$2,$3 --ignore-preflight-errors=ALL --kubernetes-version=v$1 > /tmp/kubeadm.log
+ kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-bind-port 443 --apiserver-cert-extra-sans=$2,$3 --ignore-preflight-errors=ALL --k$
  sudo cp /etc/kubernetes/admin.conf $HOME/
  sudo chown $(id -u):$(id -g) $HOME/admin.conf
  export KUBECONFIG=$HOME/admin.conf
- kubectl apply -f https://docs.projectcalico.org/v3.9/manifests/calico.yaml 
+ kubectl apply -f https://docs.projectcalico.org/v3.9/manifests/calico.yaml
  sed 's/server: .*$/server: https:\/\/'$3':443/' /etc/kubernetes/admin.conf | tee /etc/kubernetes/Public-Cluster.conf
