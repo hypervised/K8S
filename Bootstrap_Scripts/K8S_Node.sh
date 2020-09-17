@@ -5,12 +5,7 @@
 #!/bin/bash
 sudo swapoff -a
 sudo sed -i -e 's/enforcing/disabled/g' /etc/selinux/config;  setenforce 0
-/bin/bash -c "cat > /etc/yum.repos.d/virt7-docker-common-release.repo << EOM
-[virt7-docker-common-release]
-name=virt7-docker-common-release
-baseurl=http://cbs.centos.org/repos/virt7-docker-common-release/x86_64/os/
-gpgcheck=0
-EOM"
+sudo yum install docker
 sudo /bin/bash -c "cat > /etc/yum.repos.d/kubernetes.repo << EOM
 [kubernetes]
 name=Kubernetes
